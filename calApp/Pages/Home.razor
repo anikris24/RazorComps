@@ -12,7 +12,7 @@ Welcome to your new app.
 
 <br>
 <button @onclick="() => {monthsAway--; CreateMonth();}">Previous Month </button>
-<h1> @monthName </h1>
+<h1> @monthName/@year </h1>
 <button @onclick="() => {monthsAway++; CreateMonth();}"> Next Month</button>
 
 <section>
@@ -25,13 +25,19 @@ Welcome to your new app.
 @code {
     string monthName = "";
     DateTime monthEnd, monthStart;
-    int monthsAway=0;
+    int monthsAway=0, yearsAway=0;
+    int year;
 
     int col = 0;
 
 
     void CreateMonth() {
-        monthStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month + monthsAway, 1);
+        int month = DateTime.Now.Month + monthsAway;
+        yearsAway = ((month-1)/12);
+        month = ((month -1) %12) + 1;
+        year =  DateTime.Now.Year+ yearsAway;
+        
+        monthStart = new DateTime(DateTime.Now.Year+ yearsAway, month, 1);
         monthEnd = monthStart.AddMonths(1).AddDays(-1);
         
         _logger.LogDebug($"monthStart {monthStart} monthEnd {monthEnd}");
