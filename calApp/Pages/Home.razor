@@ -1,0 +1,59 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+
+<button @onclick="() => {monthsAway--; CreateMonth();}">Previous Month </button>
+<h1> @monthName </h1>
+<button @onclick="() => {monthsAway++; CreateMonth();}"> Next Month</button>
+
+<section>
+    @for(int i=1; i<= @monthEnd.Day; i++) {
+        <div> @i </div>
+    }
+</section>
+
+
+@code {
+    string monthName = "";
+    DateTime monthEnd, monthStart;
+    int monthsAway=0;
+
+    int col = 0;
+
+
+    void CreateMonth() {
+
+        monthStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month+ monthsAway, 1);
+        monthEnd = monthStart.AddMonths(1 + monthsAway).AddDays(-1);
+
+
+        monthName = monthStart.Month switch {
+            1 => "January",
+            2 => "February",
+            3 => "March",
+            4 => "April",
+            5 => "May",
+            6 => "June",
+            7 => "July",
+            8 => "August",
+            9 => "September",
+            10 => "October",
+            11 => "November",
+            12 => "December",
+            _ => ""
+        };
+
+    }
+    protected override void OnInitialized(){
+        CreateMonth();
+        
+
+
+
+    }
+}
