@@ -1,4 +1,7 @@
 ﻿@page "/"
+@using Microsoft.Extensions.Logging
+@inject ILogger<Home> _logger
+@using System.Diagnostics
 
 <PageTitle>Home</PageTitle>
 
@@ -7,6 +10,7 @@
 Welcome to your new app.
 
 
+<br>
 <button @onclick="() => {monthsAway--; CreateMonth();}">Previous Month </button>
 <h1> @monthName </h1>
 <button @onclick="() => {monthsAway++; CreateMonth();}"> Next Month</button>
@@ -28,10 +32,11 @@ Welcome to your new app.
 
     void CreateMonth() {
 
-        monthStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month+ monthsAway, 1);
-        monthEnd = monthStart.AddMonths(1 + monthsAway).AddDays(-1);
-
-
+        
+        monthStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month + monthsAway, 1);
+        monthEnd = monthStart.AddMonths(1).AddDays(-1);
+        
+        _logger.LogDebug($"monthStart {monthStart} monthEnd {monthEnd}");
         monthName = monthStart.Month switch {
             1 => "January",
             2 => "February",
@@ -52,6 +57,7 @@ Welcome to your new app.
     protected override void OnInitialized(){
         CreateMonth();
         
+    
 
 
 
